@@ -1,1 +1,676 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Agro Forte | Futuro Sustentável</title>
+    <!-- Fontes futuristas e ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050b12;
+            font-family: 'Inter', 'Space Grotesk', sans-serif;
+            color: #eef5ff;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Efeito de grade futurista e partículas sutis */
+        .bg-futuristic {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 30%, #0a1927, #010409);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 196, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 196, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Cursor custom minimal (apenas efeito visual) */
+        .cursor-fx {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(0,255,200,0.08) 0%, rgba(0,255,150,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+            filter: blur(25px);
+        }
+
+        /* Scrollbar futurista */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a121c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00e0c0;
+            border-radius: 8px;
+        }
+
+        /* Animações */
+        @keyframes floatGlow {
+            0% { transform: translateY(0px) scale(1); opacity: 0.6;}
+            100% { transform: translateY(-20px) scale(1.05); opacity: 1;}
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(35px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 255, 200, 0.3); box-shadow: 0 0 0 0 rgba(0, 255, 200, 0.2);}
+            100% { border-color: rgba(0, 255, 200, 0.8); box-shadow: 0 0 12px 2px rgba(0, 255, 200, 0.4);}
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Container e tipografia */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Header / Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(0, 255, 200, 0.25);
+            backdrop-filter: blur(4px);
+        }
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #C0FFEE, #00E6D9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            font-weight: 500;
+            font-size: 1rem;
+            background: none;
+            color: #9efff0;
+        }
+        .nav-links a {
+            color: #ccf5ff;
+            margin-left: 32px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #0ff;
+            text-shadow: 0 0 6px #0ff;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background: #0ff;
+            transition: 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 40px 0 80px;
+        }
+        .hero-content {
+            flex: 1.2;
+        }
+        .hero-badge {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: rgba(0, 255, 200, 0.18);
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            backdrop-filter: blur(5px);
+            border: 0.5px solid #0ff3;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(to right, #fff, #a0f5ea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero h1 .accent {
+            color: #00ffd0;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #bcd0e6;
+            max-width: 550px;
+            margin-bottom: 35px;
+        }
+        .btn-glow {
+            background: linear-gradient(95deg, #00b89422, #00d2b5);
+            border: 1px solid #0ff;
+            color: #0ff;
+            padding: 14px 32px;
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(8px);
+        }
+        .btn-glow:hover {
+            background: #0ff;
+            color: #010101;
+            box-shadow: 0 0 20px #0ff8;
+            border-color: #0ff;
+            transform: scale(1.02);
+        }
+        .hero-stats {
+            flex: 0.9;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .stat-card {
+            background: rgba(12, 25, 35, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 22px 22px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 200, 0.3);
+            transition: 0.3s;
+            min-width: 140px;
+        }
+        .stat-card:hover {
+            transform: translateY(-6px);
+            border-color: #0ff;
+            box-shadow: 0 12px 28px -12px #0ff3;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0ff;
+        }
+        /* Seção de cards */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(125deg, #eef5ff, #7affec);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        .fut-card {
+            background: rgba(8, 22, 30, 0.65);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 32px 24px;
+            border: 1px solid rgba(0, 255, 200, 0.3);
+            transition: all 0.4s;
+            cursor: default;
+        }
+        .fut-card:hover {
+            border-color: #0ff;
+            transform: translateY(-8px);
+            background: rgba(12, 32, 40, 0.8);
+            box-shadow: 0 20px 35px -12px rgba(0, 255, 200, 0.2);
+        }
+        .card-icon {
+            font-size: 2.8rem;
+            color: #0ff;
+            margin-bottom: 20px;
+        }
+        .fut-card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 12px;
+        }
+        .fut-card p {
+            color: #bdd4e9;
+        }
+
+        /* Seção Equilíbrio (barras/indicadores) */
+        .balance-section {
+            background: rgba(0, 20, 20, 0.4);
+            border-radius: 48px;
+            padding: 50px 40px;
+            margin: 70px 0;
+            border: 1px solid rgba(0, 255, 200, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .balance-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .meter {
+            flex: 1;
+        }
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .progress-bar-bg {
+            height: 12px;
+            background: #1e2a32;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #00d4b0, #00ffc3);
+            border-radius: 20px;
+            transition: width 1.2s ease-out;
+        }
+        .balance-text {
+            flex: 1;
+            text-align: center;
+        }
+        .balance-text h3 {
+            font-size: 2rem;
+        }
+        .balance-text .highlight {
+            color: #0ff;
+            font-weight: 800;
+        }
+
+        /* Seção de inovação */
+        .tech-show {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 50px 0;
+        }
+        .tech-item {
+            background: #07161f55;
+            border-radius: 28px;
+            padding: 28px;
+            flex: 1;
+            border-left: 4px solid #0ff;
+        }
+
+        /* Rodapé futurista */
+        footer {
+            margin-top: 100px;
+            padding: 50px 0 30px;
+            border-top: 1px solid #0ff3;
+            text-align: center;
+            color: #7e9eb5;
+        }
+        .footer-highlight {
+            color: #0ff;
+        }
+
+        /* Responsividade */
+        @media (max-width: 850px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links a {
+                margin: 0 15px;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        button, .btn-glow {
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-futuristic"></div>
+<div class="grid-overlay"></div>
+<div class="cursor-fx" id="cursorGlow"></div>
+
+<!-- Navbar Futurista -->
+<div class="container">
+    <nav class="navbar">
+        <div class="logo">AGRO<span>FORTE</span> <span style="font-size:0.9rem;">⚡ futuro sustentável</span></div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Soluções</a>
+            <a href="#">Tecnologia</a>
+            <a href="#">Impacto</a>
+            <a href="#">Contato</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content animate-on-scroll">
+            <div class="hero-badge"><i class="fas fa-leaf"></i> Agro 4.0 + ESG</div>
+            <h1>Produção que alimenta o amanhã,<br> <span class="accent">respeitando a Terra</span></h1>
+            <p>Equilíbrio entre alta produtividade e regeneração ambiental. Inovação, dados e biotecnologia para um agro forte e eterno.</p>
+            <button class="btn-glow" id="exploreBtn"><i class="fas fa-chart-line"></i> Explorar soluções</button>
+        </div>
+        <div class="hero-stats animate-on-scroll">
+            <div class="stat-card">
+                <div class="stat-number">+32%</div>
+                <div>Produtividade sustentável</div>
+                <i class="fas fa-tractor" style="margin-top:8px; opacity:0.7;"></i>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-45%</div>
+                <div>Carbono por hectare</div>
+                <i class="fas fa-globe-americas"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards de Pilares Futuristas -->
+    <div class="animate-on-scroll">
+        <h2 class="section-title"><i class="fas fa-microchip"></i> Pilares do Agro Sustentável</h2>
+        <div class="cards-grid">
+            <div class="fut-card">
+                <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                <h3>Bio insumos</h3>
+                <p>Redução de químicos com microrganismos benéficos, aumento da resiliência do solo e colheitas mais limpas.</p>
+            </div>
+            <div class="fut-card">
+                <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
+                <h3>AgriInteligência</h3>
+                <p>Sensores IoT, satélites e IA mapeiam cada metro da lavoura, otimizando água, nutrientes e reduzindo desperdícios.</p>
+            </div>
+            <div class="fut-card">
+                <div class="card-icon"><i class="fas fa-solar-panel"></i></div>
+                <h3>Energia limpa</h3>
+                <p>Parques solares e biodigestores no campo garantem autonomia energética e redução líquida de emissões.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção Equilíbrio: Balanço entre produção e meio ambiente (indicadores) -->
+    <div class="balance-section animate-on-scroll" id="balanceMeter">
+        <div class="balance-flex">
+            <div class="meter">
+                <div class="meter-label"><span>🌾 Eficiência produtiva</span> <span id="prodValue">0%</span></div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="prodFill" style="width: 0%;"></div></div>
+                <div class="meter-label"><span>🌿 Conservação ambiental</span> <span id="envValue">0%</span></div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="envFill" style="width: 0%;"></div></div>
+                <div class="meter-label"><span>⚖️ Índice de equilíbrio agroecológico</span> <span id="eqValue">0%</span></div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="eqFill" style="width: 0%; background: linear-gradient(90deg,#00e6c3,#b5ffed);"></div></div>
+            </div>
+            <div class="balance-text">
+                <h3>⚖️ <span class="highlight">Equilíbrio dinâmico</span></h3>
+                <p>Nossas métricas mostram que é possível alcançar alta produtividade regenerando ecossistemas. O futuro é simbiótico.</p>
+                <i class="fas fa-charging-station" style="font-size: 2rem; margin-top: 15px; color:#0ff;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de inovação + Carrossel de dados futuristas -->
+    <div class="animate-on-scroll">
+        <h2 class="section-title"><i class="fas fa-vr-cardboard"></i> Tecnologias imersivas aplicadas</h2>
+        <div class="tech-show">
+            <div class="tech-item">
+                <i class="fas fa-drones" style="font-size: 2.5rem; color:#0ff;"></i>
+                <h3 style="margin: 12px 0;">Drones autônomos</h3>
+                <p>Monitoramento de pragas em tempo real, pulverização de precisão, reduzindo defensivos em até 70%.</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-database" style="font-size: 2.5rem; color:#0ff;"></i>
+                <h3 style="margin: 12px 0;">Blockchain da origem</h3>
+                <p>Rastreabilidade total do campo à mesa, garantindo práticas sustentáveis e créditos de carbono.</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-cloud-sun" style="font-size: 2.5rem; color:#0ff;"></i>
+                <h3 style="margin: 12px 0;">Agricultura climática</h3>
+                <p>Modelos preditivos antecipam secas e chuvas, maximizando o uso de recursos hídricos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Citação impactante -->
+    <div class="animate-on-scroll" style="text-align: center; margin: 70px 0; background: rgba(0,20,20,0.5); padding: 40px; border-radius: 64px;">
+        <i class="fas fa-quote-left" style="font-size: 2.5rem; color:#0ff; opacity: 0.7;"></i>
+        <p style="font-size: 1.5rem; max-width: 800px; margin: 20px auto; font-weight: 400;">"O agro forte do futuro não é o que mais extrai, mas o que mais regenera. tecnologia a serviço da vida."</p>
+        <span style="letter-spacing: 2px;">— Agro Forte, missão 2030 —</span>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p><i class="fas fa-globe"></i> Agro Forte - Futuro Sustentável | Equilíbrio entre produção e meio ambiente</p>
+            <p style="margin-top: 18px;">🚀 Agricultura de precisão + ESG + Inovação biofílica</p>
+            <p style="margin-top: 22px; font-size: 0.8rem;">© 2026 •  Cultivando o amanhã com inteligência regenerativa</p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // Cursor efeito de luz futurista
+    const cursor = document.getElementById('cursorGlow');
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    // Animação de scroll (Intersection Observer)
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2, rootMargin: "0px 0px -40px 0px" });
+    animatedElements.forEach(el => observer.observe(el));
+
+    // Atualização dos medidores com efeito dinâmico ao entrar na seção (reforçar equilíbrio)
+    const balanceSection = document.querySelector('#balanceMeter');
+    let animatedBars = false;
+    const prodFill = document.getElementById('prodFill');
+    const envFill = document.getElementById('envFill');
+    const eqFill = document.getElementById('eqFill');
+    const prodValue = document.getElementById('prodValue');
+    const envValue = document.getElementById('envValue');
+    const eqValue = document.getElementById('eqValue');
+
+    function animateProgressBars() {
+        if(animatedBars) return;
+        animatedBars = true;
+        // Valores finais (simulando dados reais de equilíbrio)
+        const finalProd = 94;
+        const finalEnv = 88;
+        const finalEq = 91;
+        let currentProd = 0, currentEnv = 0, currentEq = 0;
+        const stepTime = 15;
+        const incrementProd = finalProd / 38;
+        const incrementEnv = finalEnv / 38;
+        const incrementEq = finalEq / 38;
+        const interval = setInterval(() => {
+            let updated = false;
+            if (currentProd < finalProd) {
+                currentProd = Math.min(currentProd + incrementProd, finalProd);
+                prodFill.style.width = currentProd + '%';
+                prodValue.innerText = Math.floor(currentProd) + '%';
+                updated = true;
+            }
+            if (currentEnv < finalEnv) {
+                currentEnv = Math.min(currentEnv + incrementEnv, finalEnv);
+                envFill.style.width = currentEnv + '%';
+                envValue.innerText = Math.floor(currentEnv) + '%';
+                updated = true;
+            }
+            if (currentEq < finalEq) {
+                currentEq = Math.min(currentEq + incrementEq, finalEq);
+                eqFill.style.width = currentEq + '%';
+                eqValue.innerText = Math.floor(currentEq) + '%';
+                updated = true;
+            }
+            if (!updated) clearInterval(interval);
+        }, stepTime);
+    }
+
+    // Observador para iniciar animação da barra quando a seção de equilíbrio aparecer
+    const balanceObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animatedBars) {
+                animateProgressBars();
+            }
+        });
+    }, { threshold: 0.3 });
+    if(balanceSection) balanceObserver.observe(balanceSection);
+
+    // Botão explorar alerta imersivo
+    const exploreBtn = document.getElementById('exploreBtn');
+    if(exploreBtn) {
+        exploreBtn.addEventListener('click', () => {
+            // Efeito futurista de notificação
+            const toast = document.createElement('div');
+            toast.innerText = '🌱 Iniciando simulação de agro sustentável: dados carregados.';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#0a1e28';
+            toast.style.color = '#0ff';
+            toast.style.padding = '14px 28px';
+            toast.style.borderRadius = '48px';
+            toast.style.border = '1px solid #0ff';
+            toast.style.backdropFilter = 'blur(12px)';
+            toast.style.fontWeight = '600';
+            toast.style.zIndex = '9999';
+            toast.style.fontFamily = 'monospace';
+            toast.style.boxShadow = '0 0 20px #0ff4';
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 2800);
+            // Rolar suavemente para seção de equilibrio demonstrativo
+            document.querySelector('#balanceMeter')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+
+    // efeito de neon pulsante nos stats card ao passar o mouse? jah tem hover, adicional: 
+    // simulação de contador automático nos números estáticos com um toque dinâmico no carregamento
+    const statNumbers = document.querySelectorAll('.stat-number');
+    if (statNumbers.length) {
+        const counters = [
+            { elem: statNumbers[0], target: 32, suffix: '%', isFloat: false },
+            { elem: statNumbers[1], target: 45, suffix: '%', isFloat: false }
+        ];
+        counters.forEach(counter => {
+            let current = 0;
+            const step = Math.ceil(counter.target / 35);
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= counter.target) {
+                    counter.elem.innerText = counter.target + counter.suffix;
+                    clearInterval(interval);
+                } else {
+                    counter.elem.innerText = current + counter.suffix;
+                }
+            }, 35);
+        });
+    }
+
+    // Se a seção já estiver visível no carregamento, chamar animação imediatamente
+    window.addEventListener('load', () => {
+        const rect = balanceSection?.getBoundingClientRect();
+        if(rect && rect.top < window.innerHeight - 100 && !animatedBars) {
+            animateProgressBars();
+        }
+        // garantir que os cards e hero tenham classe visible se já visíveis
+        animatedElements.forEach(el => {
+            const rectEl = el.getBoundingClientRect();
+            if(rectEl.top < window.innerHeight - 80) {
+                el.classList.add('visible');
+                observer.unobserve(el);
+            }
+        });
+    });
+
+    // Efeito nas bordas da navbar e hover imersivo
+    console.log('🌍 Agro Forte - Inovação e equilíbrio para um futuro sustentável');
+</script>
+</body>
+</html>
